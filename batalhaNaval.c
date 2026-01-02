@@ -1,40 +1,99 @@
 #include <stdio.h>
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
-
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+    int tamanhoTabuleiro = 10;
+    int tamanhoNavio = 3;
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+    // Declaração do tabuleiro
+    int tabuleiro[10][10];
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+    // Inicialização do tabuleiro com água (0)
+    for (int i = 0; i < tamanhoTabuleiro; i++) {
+        for (int j = 0; j < tamanhoTabuleiro; j++) {
+            tabuleiro[i][j] = 0;
+        }
+    }
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
+    // Navios (vetores unidimensionais)
+    int navioHorizontal[3] = {3, 3, 3};
+    int navioVertical[3]   = {3, 3, 3};
+
+    // Coordenadas iniciais (linha numérica, coluna letra)
+    // Linha começa em 1 e coluna começa em 'A'
+    int linhaH = 3;      // Linha 3
+    char colunaH = 'B';  // Coluna B
+
+    int linhaV = 6;      // Linha 6
+    char colunaV = 'G';  // Coluna G
+
+    // Conversão para índices do array (começam em 0)
+    int linhaHIndex = linhaH - 1;
+    int colunaHIndex = colunaH - 'A';
+
+    int linhaVIndex = linhaV - 1;
+    int colunaVIndex = colunaV - 'A';
+
     
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+    // Posicionamento do navio horizontal
+   
+    if (colunaHIndex + tamanhoNavio <= tamanhoTabuleiro) {
+        int podePosicionar = 1;
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+        // Verifica sobreposição
+        for (int i = 0; i < tamanhoNavio; i++) {
+            if (tabuleiro[linhaHIndex][colunaHIndex + i] != 0) {
+                podePosicionar = 0;
+                break;
+            }
+        }
+
+        // Posiciona o navio horizontal
+        if (podePosicionar) {
+            for (int i = 0; i < tamanhoNavio; i++) {
+                tabuleiro[linhaHIndex][colunaHIndex + i] = navioHorizontal[i];
+            }
+        }
+    }
+
+    
+    // Posicionamento do navio vertical
+   
+    if (linhaVIndex + tamanhoNavio <= tamanhoTabuleiro) {
+        int podePosicionar = 1;
+
+        // Verifica sobreposição
+        for (int i = 0; i < tamanhoNavio; i++) {
+            if (tabuleiro[linhaVIndex + i][colunaVIndex] != 0) {
+                podePosicionar = 0;
+                break;
+            }
+        }
+
+        // Posiciona o navio vertical
+        if (podePosicionar) {
+            for (int i = 0; i < tamanhoNavio; i++) {
+                tabuleiro[linhaVIndex + i][colunaVIndex] = navioVertical[i];
+            }
+        }
+    }
+
+    // ============================
+    // Exibição do tabuleiro
+    
+
+    printf("    ");
+    for (char c = 'A'; c < 'A' + tamanhoTabuleiro; c++) {
+        printf("%c ", c);
+    }
+    printf("\n");
+
+    for (int i = 0; i < tamanhoTabuleiro; i++) {
+        printf("%2d  ", i + 1);
+        for (int j = 0; j < tamanhoTabuleiro; j++) {
+            printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }
