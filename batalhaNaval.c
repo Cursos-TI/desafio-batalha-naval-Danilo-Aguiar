@@ -1,95 +1,150 @@
 #include <stdio.h>
 
+#define TAM_TABULEIRO 10
+#define TAM_NAVIO 3
+#define AGUA 0
+#define NAVIO 3
+
 int main() {
-    int tamanhoTabuleiro = 10;
-    int tamanhoNavio = 3;
 
-    // Declaração do tabuleiro
-    int tabuleiro[10][10];
+    int tabuleiro[TAM_TABULEIRO][TAM_TABULEIRO];
 
-    // Inicialização do tabuleiro com água (0)
-    for (int i = 0; i < tamanhoTabuleiro; i++) {
-        for (int j = 0; j < tamanhoTabuleiro; j++) {
-            tabuleiro[i][j] = 0;
+    // Inicializa o tabuleiro com água
+    for (int i = 0; i < TAM_TABULEIRO; i++) {
+        for (int j = 0; j < TAM_TABULEIRO; j++) {
+            tabuleiro[i][j] = AGUA;
         }
     }
 
-    // Navios (vetores unidimensionais)
-    int navioHorizontal[3] = {3, 3, 3};
-    int navioVertical[3]   = {3, 3, 3};
+    // ============================
+    // Coordenadas iniciais dos navios
+    // ============================
 
-    // Coordenadas iniciais (linha numérica, coluna letra)
-    // Linha começa em 1 e coluna começa em 'A'
+    // Navio horizontal
     int linhaH = 3;      // Linha 3
     char colunaH = 'B';  // Coluna B
 
+    // Navio vertical
     int linhaV = 6;      // Linha 6
-    char colunaV = 'G';  // Coluna G
+    char colunaV = 'H';  // Coluna H
 
-    // Conversão para índices do array (começam em 0)
-    int linhaHIndex = linhaH - 1;
-    int colunaHIndex = colunaH - 'A';
+    // Navio diagonal ↘
+    int linhaD1 = 1;     // Linha 1
+    char colunaD1 = 'A'; // Coluna A
 
-    int linhaVIndex = linhaV - 1;
-    int colunaVIndex = colunaV - 'A';
+    // Navio diagonal ↙
+    int linhaD2 = 4;     // Linha 4
+    char colunaD2 = 'J'; // Coluna J
 
-    
-    // Posicionamento do navio horizontal
-   
-    if (colunaHIndex + tamanhoNavio <= tamanhoTabuleiro) {
-        int podePosicionar = 1;
+    // Conversão para índices do array
+    int linhaHIdx = linhaH - 1;
+    int colunaHIdx = colunaH - 'A';
 
-        // Verifica sobreposição
-        for (int i = 0; i < tamanhoNavio; i++) {
-            if (tabuleiro[linhaHIndex][colunaHIndex + i] != 0) {
-                podePosicionar = 0;
+    int linhaVIdx = linhaV - 1;
+    int colunaVIdx = colunaV - 'A';
+
+    int linhaD1Idx = linhaD1 - 1;
+    int colunaD1Idx = colunaD1 - 'A';
+
+    int linhaD2Idx = linhaD2 - 1;
+    int colunaD2Idx = colunaD2 - 'A';
+
+    // ============================
+    // Navio horizontal
+    // ============================
+    if (colunaHIdx + TAM_NAVIO <= TAM_TABULEIRO) {
+        int livre = 1;
+
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[linhaHIdx][colunaHIdx + i] != AGUA) {
+                livre = 0;
                 break;
             }
         }
 
-        // Posiciona o navio horizontal
-        if (podePosicionar) {
-            for (int i = 0; i < tamanhoNavio; i++) {
-                tabuleiro[linhaHIndex][colunaHIndex + i] = navioHorizontal[i];
-            }
-        }
-    }
-
-    
-    // Posicionamento do navio vertical
-   
-    if (linhaVIndex + tamanhoNavio <= tamanhoTabuleiro) {
-        int podePosicionar = 1;
-
-        // Verifica sobreposição
-        for (int i = 0; i < tamanhoNavio; i++) {
-            if (tabuleiro[linhaVIndex + i][colunaVIndex] != 0) {
-                podePosicionar = 0;
-                break;
-            }
-        }
-
-        // Posiciona o navio vertical
-        if (podePosicionar) {
-            for (int i = 0; i < tamanhoNavio; i++) {
-                tabuleiro[linhaVIndex + i][colunaVIndex] = navioVertical[i];
+        if (livre) {
+            for (int i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[linhaHIdx][colunaHIdx + i] = NAVIO;
             }
         }
     }
 
     // ============================
-    // Exibição do tabuleiro
-    
+    // Navio vertical
+    // ============================
+    if (linhaVIdx + TAM_NAVIO <= TAM_TABULEIRO) {
+        int livre = 1;
 
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[linhaVIdx + i][colunaVIdx] != AGUA) {
+                livre = 0;
+                break;
+            }
+        }
+
+        if (livre) {
+            for (int i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[linhaVIdx + i][colunaVIdx] = NAVIO;
+            }
+        }
+    }
+
+    // ============================
+    // Navio diagonal ↘
+    // ============================
+    if (linhaD1Idx + TAM_NAVIO <= TAM_TABULEIRO &&
+        colunaD1Idx + TAM_NAVIO <= TAM_TABULEIRO) {
+
+        int livre = 1;
+
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[linhaD1Idx + i][colunaD1Idx + i] != AGUA) {
+                livre = 0;
+                break;
+            }
+        }
+
+        if (livre) {
+            for (int i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[linhaD1Idx + i][colunaD1Idx + i] = NAVIO;
+            }
+        }
+    }
+
+    // ============================
+    // Navio diagonal ↙
+    // ============================
+    if (linhaD2Idx + TAM_NAVIO <= TAM_TABULEIRO &&
+        colunaD2Idx - (TAM_NAVIO - 1) >= 0) {
+
+        int livre = 1;
+
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[linhaD2Idx + i][colunaD2Idx - i] != AGUA) {
+                livre = 0;
+                break;
+            }
+        }
+
+        if (livre) {
+            for (int i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[linhaD2Idx + i][colunaD2Idx - i] = NAVIO;
+            }
+        }
+    }
+
+    // ============================
+    // Exibição do tabuleiro com coordenadas
+    // ============================
     printf("    ");
-    for (char c = 'A'; c < 'A' + tamanhoTabuleiro; c++) {
+    for (char c = 'A'; c < 'A' + TAM_TABULEIRO; c++) {
         printf("%c ", c);
     }
     printf("\n");
 
-    for (int i = 0; i < tamanhoTabuleiro; i++) {
+    for (int i = 0; i < TAM_TABULEIRO; i++) {
         printf("%2d  ", i + 1);
-        for (int j = 0; j < tamanhoTabuleiro; j++) {
+        for (int j = 0; j < TAM_TABULEIRO; j++) {
             printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
@@ -97,3 +152,4 @@ int main() {
 
     return 0;
 }
+
